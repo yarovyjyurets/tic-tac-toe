@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import Board from './components/Board';
+import Menu from './components/Menu';
 
 class App extends Component {
   render() {
     return (
-      <Board/>
+      <Menu />
     );
   }
 }
