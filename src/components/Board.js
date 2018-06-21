@@ -2,13 +2,26 @@ import React, { Component } from 'react';
 import Playground from './Playground';
 import GameInfo from './GameInfo';
 
+const BOARD_SIZE = 10;
+const WIDTH = 800;
+
 class Board extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      squares: Array(9).fill(null),
+      boardSize: BOARD_SIZE,
+      squares: [],
       nextTurnIsX: true
     }
+  }
+
+  componentWillMount() {
+    this.setState((state) => {
+      return {
+        squares: Array(state.boardSize ** 2).fill(null)
+      }
+    });
+
   }
 
   handleSquareClick = (i) => {
@@ -25,45 +38,31 @@ class Board extends Component {
   }
 
   calculateWinner = () => {
-    const { squares } = this.state;
-    const lines = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6],
-    ];
-    for (let i = 0; i < lines.length; i++) {
-      const [a, b, c] = lines[i];
-      if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-        return squares[a];
-      }
-    }
-    return null;
+    // wip...
   }
 
   satrtnewGame = () => {
-    this.setState({
-      squares: Array(9).fill(null),
-      nextTurnIsX: true
+    this.setState((state) => {
+      return {
+        squares: Array(state.boardSize ** 2).fill(null)
+      }
     });
   }
   render() {
-    const { squares, nextTurnIsX } = this.state;
+    const { squares, nextTurnIsX, boardSize } = this.state;
 
-    const winner = this.calculateWinner();
-    console.log('>>>>>', winner)
-    return winner ?
+    return false ?
       <div>
-        <h2>WINNER is : "{winner}"</h2>
+        <h2>WINNER is :</h2>
         <button onClick={this.satrtnewGame}>Start new game!!!</button>
       </div> :
       <div>
         <GameInfo nextPlayerTurn={nextTurnIsX ? 'X' : 'O'} />
-        <Playground squares={squares} updateSquares={this.handleSquareClick} />
+        <Playground
+          width={WIDTH}
+          boardSize={boardSize}
+          squares={squares}
+          updateSquares={this.handleSquareClick} />
       </div>
 
   }

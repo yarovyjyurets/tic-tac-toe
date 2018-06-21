@@ -6,7 +6,6 @@ body {
 
 .board {
   margin: 0 auto;
-  width: 480px;
   background-color: black;
   display: flex;
   flex-wrap: wrap;
@@ -14,13 +13,11 @@ body {
 }
 
 .square {
-  width: 150px;
-  height: 150px;
-  margin: 4px;
-  font-size: 150px;
+  /* font-size: 100px; */
   display: flex;
   justify-content: center;
   align-items: center;
   background: #cbb4d4;
   color: #240b36;
+  /* border: 2px outset #240b36; */
 }
