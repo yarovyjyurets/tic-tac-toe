@@ -10,7 +10,8 @@ class Menu extends Component {
       playerX: '',
       playerO: '',
       boardSize: 3,
-      gameIsStarted: false
+      gameIsStarted: false,
+      winRowLength: 3
     }
   }
 
@@ -27,30 +28,29 @@ class Menu extends Component {
     this.setState({
       gameIsStarted: true
     });
-    console.log(this.state)
   }
   handleEnd = () => {
     this.setState({
       gameIsStarted: false
     });
-    console.log(this.state)
   }
 
   render() {
-    const { gameIsStarted, playerX, playerO, boardSize } = this.state;
+    const { gameIsStarted, playerX, playerO, boardSize, winRowLength } = this.state;
 
     return gameIsStarted ?
       <Board
         playerX={playerX}
         playerO={playerO}
         boardSize={boardSize}
+        winRowLength={winRowLength}
         handleEnd={this.handleEnd}
       /> :
       <GameSettingsInput
         playerX={playerX}
         playerO={playerO}
-        playerO={playerO}
         boardSize={boardSize}
+        winRowLength={winRowLength}
         handleUpdate={this.handleUpdate}
         handleStartGame={this.handleStart} />
   }

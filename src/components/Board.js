@@ -1,10 +1,29 @@
 import React, { Component } from 'react';
 import Playground from './Playground';
 import GameInfo from './GameInfo';
+import _ from 'lodash';
 
-const BOARD_SIZE = 3;
 const WIDTH = 800;
 
+const checkWinRow = (matrix, winLength, character) =>
+  matrix.some(r => r.join('').includes(character.repeat(winLength)));
+
+const buildDiagonalPositions = (matrix, size, bottomToTop) => {
+  const resultMatrix = [];
+  for (let k = 0; k <= 2 * (size - 1); ++k) {
+    const row = [];
+    for (let y = size - 1; y >= 0; --y) {
+      const x = k - (bottomToTop ? size - 1 - y : y);
+      if (x >= 0 && x < size) {
+        row.push(matrix[y][x]);
+      }
+    }
+    if (row.length > 0) {
+      resultMatrix.push(row)
+    }
+  }
+  return resultMatrix;
+}
 class Board extends Component {
   constructor(props) {
     super(props);
@@ -37,7 +56,33 @@ class Board extends Component {
   }
 
   calculateWinner = () => {
-    // wip...
+    const { squares, nextTurnIsX } = this.state;
+    const { boardSize, winRowLength } = this.props;
+    const character = !nextTurnIsX ? 'X' : 'O';
+
+    const matrix = _.chunk(squares, boardSize);
+    const verticalMatrix = _.zip.apply(_, matrix);
+    const diagonalMatrix = buildDiagonalPositions(matrix, boardSize);
+    const invertDiagonalMatrix = buildDiagonalPositions(matrix, boardSize, true);
+
+    const horizontalVerdict = checkWinRow(matrix, winRowLength, character);
+    if (horizontalVerdict) {
+      return character;
+    }
+    const verticalVerdict = checkWinRow(verticalMatrix, winRowLength, character);
+    if (verticalVerdict) {
+      return character;
+    }
+    const diagonalVerdict = checkWinRow(diagonalMatrix, winRowLength, character);
+    if (diagonalVerdict) {
+      return character;
+    }
+    const invertDiagonalVerdict = checkWinRow(invertDiagonalMatrix, winRowLength, character);
+    if (invertDiagonalVerdict) {
+      return character;
+    }
+
+    return null;
   }
 
   satrtnewGame = () => {
@@ -61,9 +106,11 @@ class Board extends Component {
       nextTurnSymbol = 'O'
     }
 
-    return false ?
+    const winner = this.calculateWinner();
+
+    return winner ?
       <div>
-        <h2>WINNER is :</h2>
+        <h2>WINNER is {winner}:</h2>
         <button onClick={this.satrtnewGame}>Start new game!!!</button>
       </div> :
       <div>

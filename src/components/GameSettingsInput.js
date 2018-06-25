@@ -30,6 +30,12 @@ class GameSettingsInput extends Component {
           onChange={this.handleInputChange.bind(null, 'boardSize')}
           defaultValue={this.props.boardSize} />
         <br />
+        <label>Win row length size:</label>
+        <input
+          type="number"
+          onChange={this.handleInputChange.bind(null, 'winRowLength')}
+          defaultValue={this.props.winRowLength} />
+        <br />
         <button onClick={this.props.handleStartGame}>GO go go play</button>
       </div>
     );
