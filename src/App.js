@@ -10,3 +10,7 @@ class App extends Component {
 }
 
 export default App;
+
+
+// add some comments to App.js
+// added forgoten smthing
